@@ -1,26 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Container, Box, Grid } from '@mui/material';
+import Header from './components/Header';
+import Question from './components/Question';
+import AnswerButtons from './components/AnswerButtons';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App: React.FC = () => {
+    return (
+        <Container className='appContainer'>
+            <Header />
+            <Box display="flex" justifyContent="center" alignItems="center" p={2}>
+                <Question text="Can you guess the movie from the emojis? Press 'New Game' to play!" />
+            </Box>
+            <Grid container spacing={2} justifyContent="center" alignItems="center">
+                <AnswerButtons options={["Option 1", "Option 2", "Option 3", "Option 4"]} />
+            </Grid>
+        </Container>
+    );
+};
 
 export default App;
