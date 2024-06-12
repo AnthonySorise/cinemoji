@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Container, Box, Grid, Button } from '@mui/material';
+import { Container, Box, Grid } from '@mui/material';
 import Header from './components/Header';
-import QuestionText from './QuestionText';
+import QuestionText from './components/QuestionText';
 import AnswerButtons from './components/AnswerButtons';
 import './App.css';
 import { questions } from './questions';
@@ -9,6 +9,10 @@ import { questions } from './questions';
 const App: React.FC = () => {
     const [currentQuestion, setCurrentQuestion] = useState<string | null>(null);
     const [currentAnswers, setCurrentAnswers] = useState<string[]>([]);
+    const [buttonText, setButtonText] = useState<string>("New Game");
+    const [isAnswerNeeded, setIsAnswerNeeded] = useState<boolean>(false);
+    const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+    const [correctAnswer, setCorrectAnswer] = useState<string | null>(null);
 
     const startGame = () => {
         const questionKeys = Object.keys(questions);
@@ -20,22 +24,36 @@ const App: React.FC = () => {
             .slice(0, 3)
             .map(key => questions[key]);
 
-        // Combine correct answer with wrong answers and shuffle
         const allAnswers = [correctAnswer, ...wrongAnswers].sort(() => 0.5 - Math.random());
 
-        // Set state
         setCurrentQuestion(randomQuestion);
         setCurrentAnswers(allAnswers);
+        setButtonText("Next Question");
+        setIsAnswerNeeded(true);
+        setSelectedAnswer(null);
+        setCorrectAnswer(correctAnswer);
+    };
+
+    const handleAnswerClick = (answer: string) => {
+        if (isAnswerNeeded) {
+            setSelectedAnswer(answer);
+            setIsAnswerNeeded(false);
+        }
     };
 
     return (
         <Container className='appContainer'>
-            <Header startGame={startGame} />
+            <Header buttonText={buttonText} isButtonDisabled={isAnswerNeeded} startGame={startGame} />
             <Box display="flex" justifyContent="center" alignItems="center" p={2}>
                 <QuestionText text={currentQuestion || "Can you guess the movie from the emojis? Press 'New Game' to play!"} />
             </Box>
             <Grid container spacing={2} justifyContent="center" alignItems="center">
-                <AnswerButtons options={currentAnswers} />
+                <AnswerButtons
+                    options={currentAnswers}
+                    selectedAnswer={selectedAnswer}
+                    correctAnswer={correctAnswer}
+                    onAnswerClick={handleAnswerClick}
+                />
             </Grid>
         </Container>
     );
