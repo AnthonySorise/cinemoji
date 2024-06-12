@@ -1,11 +1,11 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 
-interface QuestionProps {
+interface QuestionTextProps {
     text: string;
 }
 
-const Question: React.FC<QuestionProps> = ({ text }) => {
+const QuestionText: React.FC<QuestionTextProps> = ({ text }) => {
     return (
         <Typography variant="h5" align="center">
             {text}
@@ -13,4 +13,4 @@ const Question: React.FC<QuestionProps> = ({ text }) => {
     );
 };
 
-export default Question;
+export default QuestionText;
